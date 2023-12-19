@@ -5,8 +5,8 @@
 
 ## Avoid error warning: using Using the Impeller rendering backend.
 ***info.plist file:
-<key>FLTEnableImpeller</key>
-<false/>
+- FLTEnableImpeller (key tag)
+- false (attribute value)
 
 ## Movie-App with Getx example
 - https://github.com/socialmad/movie-app
