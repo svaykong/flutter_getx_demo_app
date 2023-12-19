@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: AppRoutes.upcomingMovie,
+      initialRoute: AppRoutes.home,
       getPages: AppPages.pages,
       debugShowCheckedModeBanner: false,
     );

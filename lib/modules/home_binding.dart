@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 
-import 'home_controller.dart';
+// import 'home_controller.dart';
+import '../modules/popular_movie/popular_movie_controller.dart';
+import '../modules/upcoming_movie/upcoming_movie_controller.dart';
 
 /*
 ***Binding
@@ -12,6 +14,8 @@ import 'home_controller.dart';
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => HomeController());
+    //Get.lazyPut(() => HomeController());
+    Get.lazyPut(() => PopularMovieController());
+    Get.lazyPut(() => UpcomingMovieController());
   }
 }
