@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../shared_widgets/heading_section.dart';
-import 'widgets/horizontal_view_section.dart';
+import '../../shared_widgets/heading_section.dart';
+import '../../shared_widgets/horizontal_view_section.dart';
 import 'popular_movie_controller.dart';
 
 class PopularMoviePage extends StatelessWidget {
@@ -30,10 +30,10 @@ class PopularMoviePage extends StatelessWidget {
                       baseColor: Colors.grey[300]!,
                       highlightColor: Colors.grey[100]!,
                       child: const HorizontalViewSection(
-                        popularMovies: null,
+                        movies: [],
                       ),
                     )
-                  : HorizontalViewSection(popularMovies: controller.popularMovies),
+                  : HorizontalViewSection(movies: controller.popularMovies),
             ],
           ),
         ),

@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 
 // import 'home_controller.dart';
-import '../modules/popular_movie/popular_movie_controller.dart';
-import '../modules/upcoming_movie/upcoming_movie_controller.dart';
+import '../popular_movie/popular_movie_controller.dart';
+import '../upcoming_movie/upcoming_movie_controller.dart';
 
 /*
 ***Binding

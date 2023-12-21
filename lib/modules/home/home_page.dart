@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'shared_widgets/heading_section.dart';
-import '../utils/logger.dart';
-import '../modules/popular_movie/popular_movie_controller.dart';
-import '../modules/popular_movie/widgets/horizontal_view_section.dart' as popular;
-import '../modules/upcoming_movie/widgets/horizontal_view_section.dart' as upcoming;
-import '../modules/upcoming_movie/upcoming_movie_controller.dart';
+import '../../shared_widgets/heading_section.dart';
+import '../../utils/logger.dart';
+import '../popular_movie/popular_movie_controller.dart';
+import '../../shared_widgets/horizontal_view_section.dart';
+import '../upcoming_movie/upcoming_movie_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -40,13 +38,13 @@ class HomePage extends StatelessWidget {
                   return Shimmer.fromColors(
                     baseColor: Colors.grey[300]!,
                     highlightColor: Colors.grey[100]!,
-                    child: const popular.HorizontalViewSection(
-                      popularMovies: null,
+                    child: const HorizontalViewSection(
+                      movies: [],
                     ),
                   );
                 }
 
-                return popular.HorizontalViewSection(popularMovies: controller.popularMovies);
+                return HorizontalViewSection(movies: controller.popularMovies);
               },
             ),
             HeadingSection(
@@ -58,11 +56,11 @@ class HomePage extends StatelessWidget {
                   ? Shimmer.fromColors(
                       baseColor: Colors.grey[300]!,
                       highlightColor: Colors.grey[100]!,
-                      child: const upcoming.HorizontalViewSection(
-                        upcomingMovies: null,
+                      child: const HorizontalViewSection(
+                        movies: [],
                       ),
                     )
-                  : upcoming.HorizontalViewSection(upcomingMovies: controller.upcomingMovies),
+                  : HorizontalViewSection(movies: controller.upcomingMovies),
             ),
           ],
         ),
