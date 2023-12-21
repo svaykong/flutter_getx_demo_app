@@ -12,7 +12,7 @@ class UpcomingMoviePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UpcomingMovieController>(builder: (controller) {
-      if (controller.upcomingMovies.isEmpty && controller.isLoading) {
+      if (controller.isLoading) {
         return Shimmer.fromColors(
           baseColor: Colors.grey[300]!,
           highlightColor: Colors.grey[100]!,
@@ -29,7 +29,7 @@ class UpcomingMoviePage extends StatelessWidget {
         );
       }
 
-      return HorizontalViewSection(movies: controller.upcomingMovies);
+      return HorizontalViewSection(movies: controller.upcomingMovie.results);
     });
   }
 }

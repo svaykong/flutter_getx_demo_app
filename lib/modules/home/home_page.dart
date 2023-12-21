@@ -28,7 +28,9 @@ class HomePage extends StatelessWidget {
             children: [
               HeadingSection(
                 headingName: 'Popular Movies',
-                onSeeAllPressed: () {},
+                onSeeAllPressed: () {
+
+                },
               ),
               const PopularMoviePage(),
               HeadingSection(

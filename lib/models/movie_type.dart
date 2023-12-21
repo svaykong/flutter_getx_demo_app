@@ -3,4 +3,5 @@ enum MovieType {
   POPULAR,
   UPCOMPING,
   NOWPLAYING,
+  TOPRATED,
 }

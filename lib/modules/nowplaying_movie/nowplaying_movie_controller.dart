@@ -7,7 +7,7 @@ import '../../utils/logger.dart';
 
 class NowPlayingMovieController extends GetxController {
   MovieApi movieApi = MovieApi();
-  List<MovieModel> nowPlayingMovies = [];
+  late MovieModel nowPlayingMovie;
   bool isLoading = true;
   String errMsg = '';
 
@@ -21,11 +21,7 @@ class NowPlayingMovieController extends GetxController {
     try {
       var response = await movieApi.getNowPlayingMovies();
       if (response != null) {
-        response['results'].forEach((data) {
-          final movie = MovieModel.fromMap(data);
-          movie.movieType = MovieType.NOWPLAYING;
-          nowPlayingMovies.add(movie);
-        });
+        nowPlayingMovie = MovieModel.fromMap(response, MovieType.NOWPLAYING);
         isLoading = false;
       }
     } catch (e) {

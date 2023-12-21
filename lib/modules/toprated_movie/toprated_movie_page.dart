@@ -12,7 +12,7 @@ class TopRatedMoviePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TopRatedMovieController>(builder: (controller) {
-      if (controller.topRatedMovies.isEmpty && controller.isLoading) {
+      if (controller.isLoading) {
         return Shimmer.fromColors(
           baseColor: Colors.grey[300]!,
           highlightColor: Colors.grey[100]!,
@@ -29,7 +29,7 @@ class TopRatedMoviePage extends StatelessWidget {
         );
       }
 
-      return HorizontalViewSection(movies: controller.topRatedMovies);
+      return HorizontalViewSection(movies: controller.topRatedMovie.results);
     });
   }
 }

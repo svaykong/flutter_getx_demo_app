@@ -13,7 +13,7 @@ class NowPlayingMoviePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<NowPlayingMovieController>(
       builder: (controller) {
-        if (controller.nowPlayingMovies.isEmpty && controller.isLoading) {
+        if (controller.isLoading) {
           return Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
             highlightColor: Colors.grey[100]!,
@@ -29,7 +29,7 @@ class NowPlayingMoviePage extends StatelessWidget {
             child: Text(controller.errMsg),
           );
         }
-        return HorizontalViewSection(movies: controller.nowPlayingMovies);
+        return HorizontalViewSection(movies: controller.nowPlayingMovie.results);
       },
     );
   }

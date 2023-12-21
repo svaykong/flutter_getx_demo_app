@@ -7,7 +7,7 @@ import '../../models/movie_model.dart';
 
 class TopRatedMovieController extends GetxController {
   MovieApi movieApi = MovieApi();
-  List<MovieModel> topRatedMovies = [];
+  late MovieModel topRatedMovie;
   bool isLoading = true;
   String errMsg = '';
 
@@ -21,11 +21,7 @@ class TopRatedMovieController extends GetxController {
     try {
       var response = await movieApi.getTopRatedMovies();
       if (response != null) {
-        response['results'].forEach((data) {
-          final movie = MovieModel.fromMap(data);
-          movie.movieType = MovieType.UPCOMPING;
-          topRatedMovies.add(movie);
-        });
+        topRatedMovie = MovieModel.fromMap(response, MovieType.TOPRATED);
         isLoading = false;
       }
     } catch (e) {

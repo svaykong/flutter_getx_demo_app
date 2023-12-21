@@ -13,7 +13,7 @@ class PopularMoviePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<PopularMovieController>(
       builder: (controller) {
-        if (controller.popularMovies.isEmpty && controller.isLoading) {
+        if (controller.isLoading) {
           return Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
             highlightColor: Colors.grey[100]!,
@@ -30,7 +30,7 @@ class PopularMoviePage extends StatelessWidget {
           );
         }
 
-        return HorizontalViewSection(movies: controller.popularMovies);
+        return HorizontalViewSection(movies: controller.popularMovie.results);
       },
     );
   }

@@ -7,7 +7,7 @@ import '../../utils/logger.dart';
 
 class PopularMovieController extends GetxController {
   MovieApi movieApi = MovieApi();
-  List<MovieModel> popularMovies = [];
+  late MovieModel popularMovie;
   bool isLoading = true;
   String errMsg = '';
 
@@ -21,11 +21,24 @@ class PopularMovieController extends GetxController {
     try {
       var response = await movieApi.getPopularMovies();
       if (response != null) {
-        response['results'].forEach((data) {
-          final movie = MovieModel.fromMap(data);
-          movie.movieType = MovieType.POPULAR;
-          popularMovies.add(movie);
-        });
+        popularMovie = MovieModel.fromMap(response, MovieType.POPULAR);
+        isLoading = false;
+      }
+    } catch (e) {
+      'exception: $e'.log();
+      errMsg = e.toString();
+      isLoading = false;
+    } finally {
+      update(); // notify listener
+    }
+  }
+
+  //TODO: When click See All display more popular movies
+  void fetchAllPopularMovies() async {
+    try {
+      var response = await movieApi.getPopularMoviesByPage(pageNum: 1);
+      if (response != null) {
+        popularMovie = MovieModel.fromMap(response, MovieType.POPULAR);
         isLoading = false;
       }
     } catch (e) {

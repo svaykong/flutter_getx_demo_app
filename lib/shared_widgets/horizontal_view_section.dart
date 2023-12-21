@@ -13,7 +13,7 @@ class HorizontalViewSection extends StatelessWidget {
     required this.movies,
   });
 
-  final List<MovieModel> movies;
+  final List<ResultModel> movies;
 
   @override
   Widget build(BuildContext context) {

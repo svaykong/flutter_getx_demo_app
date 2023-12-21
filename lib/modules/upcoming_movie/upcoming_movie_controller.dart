@@ -7,7 +7,7 @@ import '../../models/movie_model.dart';
 
 class UpcomingMovieController extends GetxController {
   MovieApi movieApi = MovieApi();
-  List<MovieModel> upcomingMovies = [];
+  late MovieModel upcomingMovie;
   bool isLoading = true;
   String errMsg = '';
 
@@ -21,11 +21,7 @@ class UpcomingMovieController extends GetxController {
     try {
       var response = await movieApi.getUpcomingMovies();
       if (response != null) {
-        response['results'].forEach((data) {
-          final movie = MovieModel.fromMap(data);
-          movie.movieType = MovieType.UPCOMPING;
-          upcomingMovies.add(movie);
-        });
+        upcomingMovie = MovieModel.fromMap(response, MovieType.UPCOMPING);
         isLoading = false;
       }
     } catch (e) {
