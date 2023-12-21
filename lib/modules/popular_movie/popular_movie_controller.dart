@@ -1,35 +1,39 @@
 import 'package:get/get.dart';
 
+import '../../models/movie_type.dart';
 import '../../apis/movie_api.dart';
-import '../../models/popular_movie_model.dart';
+import '../../models/movie_model.dart';
 import '../../utils/logger.dart';
 
 class PopularMovieController extends GetxController {
   MovieApi movieApi = MovieApi();
-  List<PopularMovieModel> popularMovies = [];
+  List<MovieModel> popularMovies = [];
   bool isLoading = true;
+  String errMsg = '';
 
   @override
   void onInit() {
     super.onInit();
-    fetchTrendingMovies();
+    fetchPopularMovies();
   }
 
-  void fetchTrendingMovies() async {
+  void fetchPopularMovies() async {
     try {
       var response = await movieApi.getPopularMovies();
       if (response != null) {
         response['results'].forEach((data) {
-          popularMovies.add(PopularMovieModel.fromMap(data));
+          final movie = MovieModel.fromMap(data);
+          movie.movieType = MovieType.POPULAR;
+          popularMovies.add(movie);
         });
         isLoading = false;
       }
     } catch (e) {
       'exception: $e'.log();
+      errMsg = e.toString();
       isLoading = false;
     } finally {
-      // notify listener
-      update();
+      update(); // notify listener
     }
   }
 }

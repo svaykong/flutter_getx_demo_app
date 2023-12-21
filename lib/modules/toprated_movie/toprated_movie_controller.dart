@@ -5,26 +5,26 @@ import '../../models/movie_type.dart';
 import '../../apis/movie_api.dart';
 import '../../models/movie_model.dart';
 
-class UpcomingMovieController extends GetxController {
+class TopRatedMovieController extends GetxController {
   MovieApi movieApi = MovieApi();
-  List<MovieModel> upcomingMovies = [];
+  List<MovieModel> topRatedMovies = [];
   bool isLoading = true;
   String errMsg = '';
 
   @override
   void onInit() {
     super.onInit();
-    fetchUpcomingMovies();
+    fetchTopRateMovies();
   }
 
-  void fetchUpcomingMovies() async {
+  void fetchTopRateMovies() async {
     try {
-      var response = await movieApi.getUpcomingMovies();
+      var response = await movieApi.getTopRatedMovies();
       if (response != null) {
         response['results'].forEach((data) {
           final movie = MovieModel.fromMap(data);
           movie.movieType = MovieType.UPCOMPING;
-          upcomingMovies.add(movie);
+          topRatedMovies.add(movie);
         });
         isLoading = false;
       }

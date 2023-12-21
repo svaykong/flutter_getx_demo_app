@@ -4,15 +4,15 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../shared_widgets/horizontal_view_section.dart';
-import 'upcoming_movie_controller.dart';
+import 'toprated_movie_controller.dart';
 
-class UpcomingMoviePage extends StatelessWidget {
-  const UpcomingMoviePage({super.key});
+class TopRatedMoviePage extends StatelessWidget {
+  const TopRatedMoviePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<UpcomingMovieController>(builder: (controller) {
-      if (controller.upcomingMovies.isEmpty && controller.isLoading) {
+    return GetBuilder<TopRatedMovieController>(builder: (controller) {
+      if (controller.topRatedMovies.isEmpty && controller.isLoading) {
         return Shimmer.fromColors(
           baseColor: Colors.grey[300]!,
           highlightColor: Colors.grey[100]!,
@@ -29,7 +29,7 @@ class UpcomingMoviePage extends StatelessWidget {
         );
       }
 
-      return HorizontalViewSection(movies: controller.upcomingMovies);
+      return HorizontalViewSection(movies: controller.topRatedMovies);
     });
   }
 }
