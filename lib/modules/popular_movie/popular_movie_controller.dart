@@ -32,21 +32,4 @@ class PopularMovieController extends GetxController {
       update(); // notify listener
     }
   }
-
-  //TODO: When click See All display more popular movies
-  void fetchAllPopularMovies() async {
-    try {
-      var response = await movieApi.getPopularMoviesByPage(pageNum: 1);
-      if (response != null) {
-        popularMovie = MovieModel.fromMap(response, MovieType.POPULAR);
-        isLoading = false;
-      }
-    } catch (e) {
-      'exception: $e'.log();
-      errMsg = e.toString();
-      isLoading = false;
-    } finally {
-      update(); // notify listener
-    }
-  }
 }

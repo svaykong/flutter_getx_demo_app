@@ -47,6 +47,7 @@ class HorizontalViewSection extends StatelessWidget {
                     Get.toNamed(AppRoutes.movieDetails, arguments: [movies[index].id]);
                   },
                   child: CachedNetworkImage(
+                    placeholder: (_, __) => Container(color: Colors.grey[300]),
                     imageUrl: '$imageBaseUrl${movies[index].backdropPath}',
                     fit: BoxFit.cover,
                     height: Get.height * 0.30,

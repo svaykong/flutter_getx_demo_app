@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
+import 'package:get/get.dart';
+
 import '../../shared_widgets/heading_section.dart';
 import '../../modules/popular_movie/popular_movie_page.dart';
 import '../../modules/upcoming_movie/upcoming_movie_page.dart';
 import '../../modules/nowplaying_movie/nowplaying_movie_page.dart';
 import '../../modules/toprated_movie/toprated_movie_page.dart';
+import '../../routes/app_routes.dart';
+import '../../utils/logger.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -29,7 +33,7 @@ class HomePage extends StatelessWidget {
               HeadingSection(
                 headingName: 'Popular Movies',
                 onSeeAllPressed: () {
-
+                  Get.toNamed(AppRoutes.allMovies);
                 },
               ),
               const PopularMoviePage(),
