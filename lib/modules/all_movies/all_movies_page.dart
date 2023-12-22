@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_getx_demo_app/shared_widgets/round_progress_bar.dart';
 
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -61,7 +62,7 @@ class AllMoviesPage extends StatelessWidget {
         itemBuilder: (context, index) => Card(
           margin: const EdgeInsets.all(10.0),
           clipBehavior: Clip.antiAlias,
-          elevation: 20.0,
+          elevation: 2.0,
           child: GestureDetector(
             onTap: () {
               Get.toNamed(AppRoutes.movieDetails, arguments: [results[index].id]);
@@ -91,22 +92,16 @@ class AllMoviesPage extends StatelessWidget {
                       child: Text(
                         results[index].getReleaseDateISO,
                         textAlign: TextAlign.start,
+                        style: const TextStyle(color: Colors.blueGrey),
                       ),
                     ),
                   ],
                 ),
                 Positioned(
-                  bottom: 60,
-                  left: 15,
-                  child: CircleAvatar(
-                    radius: 20.0,
-                    backgroundColor: Colors.blueGrey[900],
-                    child: const Text(
-                      '72%',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
+                  bottom: 55,
+                  left: 5,
+                  child: RoundProgressBar(
+                    percent: results[index].votPercent,
                   ),
                 ),
               ],

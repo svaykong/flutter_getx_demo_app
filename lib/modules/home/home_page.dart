@@ -11,6 +11,7 @@ import '../../modules/toprated_tvshows/toprated_tvshows_page.dart';
 import '../../modules/toprated_movie/toprated_movie_page.dart';
 import '../../routes/app_routes.dart';
 import '../../utils/logger.dart';
+import '../search_movie/movie_search_delegate.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -19,12 +20,25 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TMDB'),
+        backgroundColor: const Color(0xFF032541),
+        title: Image.asset(
+          'assets/imgs/logo.png',
+          fit: BoxFit.cover,
+        ),
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.view_list_rounded),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: MovieSearchDelegate(),
+              );
+            },
+            icon: const Icon(
+              Icons.search,
+              size: 28.0,
+              color: Colors.white,
+            ),
           ),
         ],
       ),

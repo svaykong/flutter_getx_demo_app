@@ -30,25 +30,35 @@ class ResultModel {
   const ResultModel({
     required this.id,
     required this.originalTitle,
-    required this.backdropPath,
+    this.backdropPath,
     required this.releaseDate,
+    required this.votPercent,
   });
 
   final int id;
   final String originalTitle;
-  final String backdropPath;
+  final String? backdropPath;
   final String releaseDate;
+  final int votPercent;
 
   String get getReleaseDateISO {
+    if (releaseDate.isEmpty) {
+      return '';
+    }
     DateFormat dateFormat = DateFormat.yMMMMd();
     var formattedDate = dateFormat.format(DateTime.parse(releaseDate));
     return formattedDate.toString();
   }
 
-  factory ResultModel.fromMap(Map<String, dynamic> json) => ResultModel(
-        id: json['id'],
-        originalTitle: json['original_title'] ?? json['original_name'],
-        backdropPath: json['backdrop_path'] ?? json['poster_path'],
-        releaseDate: json['release_date'] ?? json['first_air_date'],
-      );
+  factory ResultModel.fromMap(Map<String, dynamic> json) {
+    var voteAvg = double.tryParse(json['vote_average'].toString()) ?? 0;
+    var voteCount = (voteAvg * 10).round();
+    return ResultModel(
+      id: json['id'],
+      originalTitle: json['original_title'] ?? json['original_name'],
+      backdropPath: json['backdrop_path'] ?? json['poster_path'],
+      releaseDate: json['release_date'] ?? json['first_air_date'],
+      votPercent: voteCount,
+    );
+  }
 }

@@ -44,4 +44,27 @@ class MovieApi {
       return null;
     }
   }
+
+  Future<dynamic> searchMovie({required String query}) async {
+    try {
+      _url = '$apiBaseUrl/search/movie?query=$query&include_adult=false&language=en-US&page=1';
+      final response = await dio.get(
+        _url,
+        options: Options(headers: {
+          "accept": "application/json",
+          "Authorization":
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlM2I3NGZkZGFlNjg2OGUxMTlkZmQyZjViOGVmNjJkOSIsInN1YiI6IjVjODQ5NjMyYzNhMzY4NGU5OGRiMzQ5MiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GESqSqEd8OG9Aj1NproXc_dRRiCtfJxt7mWUbDuGv3s",
+        }),
+      );
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      'searchMovieApi exception: $e'.log();
+    } finally {
+      'searchMovieApi finally'.log();
+    }
+  }
 }

@@ -5,7 +5,7 @@ import '../../models/movie_details_model.dart';
 
 class MovieDetailsController extends GetxController {
   int movieId = Get.arguments[0];
-  MovieApi movieApi = MovieApi();
+  final MovieApi _movieApi = MovieApi();
 
   bool isLoading = true;
   List<MovieDetailsModel> movieData = [];
@@ -17,7 +17,7 @@ class MovieDetailsController extends GetxController {
   }
 
   void fetchMovieDetails() async {
-    var response = await movieApi.getMovieDetails(movieId: movieId);
+    var response = await _movieApi.getMovieDetails(movieId: movieId);
     if (response != null) {
       movieData.add(MovieDetailsModel.fromMap(response));
       isLoading = false;

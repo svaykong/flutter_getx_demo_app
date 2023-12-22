@@ -6,6 +6,7 @@ import '../popular_tvshows/popular_tvshows_controller.dart';
 import '../toprated_tvshows/toprated_tvshows_controller.dart';
 import '../toprated_movie/toprated_movie_controller.dart';
 import '../all_movies/all_movies_controller.dart';
+import '../search_movie/search_movie_controller.dart';
 
 /*
 ***Binding
@@ -23,5 +24,6 @@ class HomeBinding extends Bindings {
     Get.lazyPut(() => TopRatedTVShowsController());
     Get.lazyPut(() => TopRatedMovieController());
     Get.lazyPut(() => AllMoviesController());
+    Get.lazyPut(() => SearchMovieController());
   }
 }

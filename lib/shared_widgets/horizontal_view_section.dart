@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../routes/app_routes.dart';
 import '../utils/constants.dart';
 import '../models/movie_model.dart';
+import '../shared_widgets/round_progress_bar.dart';
 
 class HorizontalViewSection extends StatelessWidget {
   const HorizontalViewSection({
@@ -17,46 +18,76 @@ class HorizontalViewSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: SizedBox(
-        height: Get.height * 0.2,
-        child: ListView.builder(
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.horizontal,
-            itemCount: movies.isEmpty ? 5 : movies.length,
-            itemBuilder: (ctx, index) {
-              if (movies.isEmpty) {
-                return Card(
-                  margin: const EdgeInsets.only(right: 8.0),
-                  clipBehavior: Clip.antiAlias,
-                  elevation: 20.0,
-                  child: SizedBox(
-                    height: Get.height * 0.30,
-                    width: Get.width * 0.5,
-                  ),
-                );
-              }
-
+    return SizedBox(
+      height: Get.height * 0.35,
+      child: ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+          scrollDirection: Axis.horizontal,
+          itemCount: movies.isEmpty ? 5 : movies.length,
+          itemBuilder: (ctx, index) {
+            if (movies.isEmpty) {
               return Card(
                 margin: const EdgeInsets.only(right: 8.0),
+                elevation: 2.0,
                 clipBehavior: Clip.antiAlias,
-                elevation: 20.0,
-                child: GestureDetector(
-                  onTap: () {
-                    Get.toNamed(AppRoutes.movieDetails, arguments: [movies[index].id]);
-                  },
-                  child: CachedNetworkImage(
-                    placeholder: (_, __) => Container(color: Colors.grey[300]),
-                    imageUrl: '$imageBaseUrl${movies[index].backdropPath}',
-                    fit: BoxFit.cover,
-                    height: Get.height * 0.30,
-                    width: Get.width * 0.5,
-                  ),
+                child: SizedBox(
+                  height: Get.height * 0.30,
+                  width: Get.width * 0.5,
                 ),
               );
-            }),
-      ),
+            }
+
+            return Stack(
+              children: [
+                Card(
+                  margin: const EdgeInsets.only(right: 8.0),
+                  elevation: 2.0,
+                  clipBehavior: Clip.antiAlias,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.movieDetails, arguments: [movies[index].id]);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: CachedNetworkImage(
+                            placeholder: (_, __) => Container(color: Colors.grey[300]),
+                            imageUrl: '$imageBaseUrl${movies[index].backdropPath}',
+                            fit: BoxFit.cover,
+                            width: Get.width * 0.6,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, top: 20.0),
+                          child: Text(
+                            movies[index].originalTitle,
+                            textAlign: TextAlign.start,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+                          child: Text(
+                            movies[index].getReleaseDateISO,
+                            textAlign: TextAlign.start,
+                            style: const TextStyle(color: Colors.blueGrey),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 55,
+                  left: 5,
+                  child: RoundProgressBar(
+                    percent: movies[index].votPercent,
+                  ),
+                ),
+              ],
+            );
+          }),
     );
   }
 }

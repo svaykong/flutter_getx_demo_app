@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../../shared_widgets/round_progress_bar.dart';
 import 'movie_details_controller.dart';
 import '../../themes/app_text_theme.dart';
 import '../../themes/colors_theme.dart';
@@ -13,8 +15,9 @@ class MovieDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<MovieDetailsController>(
-      builder: (controller) => Scaffold(
+    return GetBuilder<MovieDetailsController>(builder: (controller) {
+      var movieItem = controller.movieData;
+      return Scaffold(
         backgroundColor: ThemeColor.white,
         body: controller.isLoading
             ? const Center(child: CircularProgressIndicator())
@@ -23,7 +26,7 @@ class MovieDetailsPage extends StatelessWidget {
                   return <Widget>[
                     SliverAppBar(
                       title: Text(
-                        controller.movieData[0].originalTitle,
+                        movieItem[0].originalTitle,
                         style: poppinsRegular(fontSize: 20, color: ThemeColor.white, fontWeight: FontWeight.bold),
                       ),
                       expandedHeight: Get.height / 1.8,
@@ -34,7 +37,7 @@ class MovieDetailsPage extends StatelessWidget {
                         background: Stack(
                           children: [
                             CachedNetworkImage(
-                              imageUrl: '$imageBaseUrl${controller.movieData[0].backdropPath}',
+                              imageUrl: '$imageBaseUrl${movieItem[0].backdropPath}',
                               fit: BoxFit.cover,
                               width: Get.width,
                               height: Get.height,
@@ -45,8 +48,23 @@ class MovieDetailsPage extends StatelessWidget {
                               right: 0,
                               child: Container(
                                 height: 200,
-                                decoration:
-                                    BoxDecoration(gradient: LinearGradient(begin: Alignment.bottomCenter, end: Alignment.topCenter, colors: [Colors.black.withOpacity(0.7), Colors.transparent])),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                    colors: [
+                                      Colors.black.withOpacity(0.7),
+                                      Colors.transparent,
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 5.0,
+                              left: 5.0,
+                              child: RoundProgressBar(
+                                percent: movieItem[0].votePercent,
                               ),
                             ),
                           ],
@@ -65,14 +83,37 @@ class MovieDetailsPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Overview', style: poppinsRegular(fontSize: 20, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 20),
-                      Text(controller.movieData[0].overview, style: poppinsRegular(color: ThemeColor.primaryGrey), textAlign: TextAlign.justify),
+                      Text(
+                        'Overview',
+                        style: poppinsRegular(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const Gap(20),
+                      Text(
+                        movieItem[0].overview,
+                        style: poppinsRegular(color: ThemeColor.primaryGrey),
+                        textAlign: TextAlign.justify,
+                      ),
+                      const Gap(20.0),
+                      RichText(
+                        text: TextSpan(
+                          text: 'Release ',
+                          style: poppinsRegular(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: movieItem[0].getReleaseDateISO.isEmpty ? 'None' : movieItem[0].getReleaseDateISO,
+                              style: poppinsRegular(color: ThemeColor.primaryGrey),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-      ),
-    );
+      );
+    });
   }
 }
