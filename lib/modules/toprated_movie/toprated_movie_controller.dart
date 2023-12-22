@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 
 import '../../utils/logger.dart';
-import '../../models/movie_type.dart';
+import '../../models/base_type.dart';
 import '../../apis/movie_api.dart';
 import '../../models/movie_model.dart';
 
 class TopRatedMovieController extends GetxController {
-  MovieApi movieApi = MovieApi();
+  final MovieApi _movieApi = MovieApi();
   late MovieModel topRatedMovie;
   bool isLoading = true;
   String errMsg = '';
@@ -19,16 +19,15 @@ class TopRatedMovieController extends GetxController {
 
   void fetchTopRateMovies() async {
     try {
-      var response = await movieApi.getTopRatedMovies();
+      var response = await _movieApi.getTopRatedMovies();
       if (response != null) {
-        topRatedMovie = MovieModel.fromMap(response, MovieType.TOPRATED);
-        isLoading = false;
+        topRatedMovie = MovieModel.fromMap(response, BaseType.TOPRATED_MOVIE);
       }
     } catch (e) {
       'exception: $e'.log();
       errMsg = e.toString();
-      isLoading = false;
     } finally {
+      isLoading = false;
       update(); // notify listener
     }
   }

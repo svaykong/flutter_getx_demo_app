@@ -21,18 +21,8 @@ class MovieApi {
     return await getPopularMoviesByPage(pageNum: 1);
   }
 
-  Future<dynamic> getNowPlayingMovies() async {
-    _url = '/movie/now_playing?api_key=$apiKey';
-    final response = await dio.get(_url);
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      return null;
-    }
-  }
-
-  Future<dynamic> getUpcomingMovies() async {
-    _url = '/movie/upcoming?api_key=$apiKey';
+  Future<dynamic> getTopRatedMoviesByPage({required int pageNum}) async {
+    _url = '/movie/top_rated?api_key=$apiKey&page=$pageNum';
     final response = await dio.get(_url);
     if (response.statusCode == 200) {
       return response.data;
@@ -42,13 +32,7 @@ class MovieApi {
   }
 
   Future<dynamic> getTopRatedMovies() async {
-    _url = '/movie/top_rated?api_key=$apiKey';
-    final response = await dio.get(_url);
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      return null;
-    }
+    return await getTopRatedMoviesByPage(pageNum: 1);
   }
 
   Future<dynamic> getMovieDetails({required int movieId}) async {

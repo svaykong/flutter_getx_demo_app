@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 
 import '../../utils/logger.dart';
-import '../../models/movie_type.dart';
-import '../../apis/movie_api.dart';
+import '../../models/base_type.dart';
+import '../../apis/tvshows_api.dart';
 import '../../models/movie_model.dart';
 
-class UpcomingMovieController extends GetxController {
-  MovieApi movieApi = MovieApi();
+class PopularTvShowsController extends GetxController {
+  final TVShowsApi _tvShowsApi = TVShowsApi();
   late MovieModel upcomingMovie;
   bool isLoading = true;
   String errMsg = '';
@@ -19,16 +19,15 @@ class UpcomingMovieController extends GetxController {
 
   void fetchUpcomingMovies() async {
     try {
-      var response = await movieApi.getUpcomingMovies();
+      var response = await _tvShowsApi.getPopularTVShowsMovies();
       if (response != null) {
-        upcomingMovie = MovieModel.fromMap(response, MovieType.UPCOMPING);
-        isLoading = false;
+        upcomingMovie = MovieModel.fromMap(response, BaseType.POPULAR_TVSHOWS);
       }
     } catch (e) {
       'exception: $e'.log();
       errMsg = e.toString();
-      isLoading = false;
     } finally {
+      isLoading = false;
       update(); // notify listener
     }
   }

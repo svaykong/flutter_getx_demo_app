@@ -53,6 +53,9 @@ class MovieDetailsPage extends StatelessWidget {
                         ),
                         collapseMode: CollapseMode.parallax,
                       ),
+                      iconTheme: const IconThemeData(
+                        color: Colors.white,
+                      ),
                     )
                   ];
                 }),

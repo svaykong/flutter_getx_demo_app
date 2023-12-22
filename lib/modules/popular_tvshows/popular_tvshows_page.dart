@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../shared_widgets/horizontal_view_section.dart';
-import 'upcoming_movie_controller.dart';
+import 'popular_tvshows_controller.dart';
 
-class UpcomingMoviePage extends StatelessWidget {
-  const UpcomingMoviePage({super.key});
+class PopularTvShowsPage extends StatelessWidget {
+  const PopularTvShowsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<UpcomingMovieController>(builder: (controller) {
+    return GetBuilder<PopularTvShowsController>(builder: (controller) {
       if (controller.isLoading) {
         return Shimmer.fromColors(
           baseColor: Colors.grey[300]!,

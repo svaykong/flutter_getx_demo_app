@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../shared_widgets/horizontal_view_section.dart';
-import 'nowplaying_movie_controller.dart';
+import 'toprated_tvshows_controller.dart';
 
-class NowPlayingMoviePage extends StatelessWidget {
-  const NowPlayingMoviePage({super.key});
+class TopRatedTVShowsPage extends StatelessWidget {
+  const TopRatedTVShowsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<NowPlayingMovieController>(
+    return GetBuilder<TopRatedTVShowsController>(
       builder: (controller) {
         if (controller.isLoading) {
           return Shimmer.fromColors(
