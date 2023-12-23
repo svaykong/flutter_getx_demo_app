@@ -85,6 +85,8 @@ class AllMoviesPage extends StatelessWidget {
                         results[index].originalTitle,
                         textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.titleMedium,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Padding(

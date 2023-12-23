@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 
 import '../../models/base_type.dart';
@@ -7,22 +9,24 @@ import '../../utils/logger.dart';
 
 class SearchMovieController extends GetxController {
   final MovieApi _movieApi = MovieApi();
-  MovieModel? resultSearchMovie;
-  bool isLoading = true;
-  String errMsg = '';
 
-  void search({required String query}) async {
+  //MovieModel? resultSearchMovie;
+  //bool isLoading = false;
+  //String errMsg = '';
+
+  Stream<MovieModel> search({required String query}) {
     try {
-      final response = await _movieApi.searchMovie(query: query);
-      if (response != null) {
-        resultSearchMovie = MovieModel.fromMap(response, BaseType.UNKNOWN);
-      }
+      return Stream.fromFuture(_movieApi.searchMovie(query: query));
+      /*
+      _movieApi.searchMovie(query: query)
+          .then((result) => MovieModel.fromMap(result, BaseType.UNKNOWN))
+          .asStream();
+      */
     } catch (e) {
       'exception: $e'.log();
-      errMsg = e.toString();
+      throw Exception("Search exception: $e");
     } finally {
-      isLoading = false;
-      update(); // notify listener
+      'search finally'.log();
     }
   }
 }

@@ -19,13 +19,13 @@ class HeadingSection extends StatelessWidget {
         children: [
           Text(
             headingName,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           TextButton(
             onPressed: onSeeAllPressed,
             child: Text(
               'See All',
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
         ],

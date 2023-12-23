@@ -39,42 +39,47 @@ class HorizontalViewSection extends StatelessWidget {
 
             return Stack(
               children: [
-                Card(
-                  margin: const EdgeInsets.only(right: 8.0),
-                  elevation: 2.0,
-                  clipBehavior: Clip.antiAlias,
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.movieDetails, arguments: [movies[index].id]);
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: CachedNetworkImage(
-                            placeholder: (_, __) => Container(color: Colors.grey[300]),
-                            imageUrl: '$imageBaseUrl${movies[index].backdropPath}',
-                            fit: BoxFit.cover,
-                            width: Get.width * 0.6,
+                SizedBox(
+                  width: Get.width * 0.5,
+                  child: Card(
+                    margin: const EdgeInsets.only(right: 8.0),
+                    elevation: 2.0,
+                    clipBehavior: Clip.antiAlias,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.movieDetails, arguments: [movies[index].id]);
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: CachedNetworkImage(
+                              placeholder: (_, __) => Container(color: Colors.grey[300]),
+                              imageUrl: '$imageBaseUrl${movies[index].backdropPath}',
+                              fit: BoxFit.cover,
+                              width: Get.width * 0.6,
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, top: 20.0),
-                          child: Text(
-                            movies[index].originalTitle,
-                            textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.titleMedium,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0, top: 20.0),
+                            child: Text(
+                              movies[index].originalTitle,
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context).textTheme.titleMedium,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
-                          child: Text(
-                            movies[index].getReleaseDateISO,
-                            textAlign: TextAlign.start,
-                            style: const TextStyle(color: Colors.blueGrey),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+                            child: Text(
+                              movies[index].getReleaseDateISO,
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(color: Colors.blueGrey),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
