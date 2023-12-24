@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../models/base_type.dart';
 import '../utils/constants.dart';
@@ -55,7 +54,7 @@ class MovieApi {
         _url,
         options: Options(headers: {
           "accept": "application/json",
-          "Authorization": "Bearer ${dotenv.env['TOKEN']}",
+          "Authorization": "Bearer $token",
         }),
       );
       if (response.statusCode == 200) {
