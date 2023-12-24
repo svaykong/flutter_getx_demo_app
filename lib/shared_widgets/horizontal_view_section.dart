@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 
+import '../themes/app_text_theme.dart';
 import '../routes/app_routes.dart';
+import '../themes/colors_theme.dart';
 import '../utils/constants.dart';
 import '../models/movie_model.dart';
 import '../shared_widgets/round_progress_bar.dart';
@@ -65,7 +67,7 @@ class HorizontalViewSection extends StatelessWidget {
                             child: Text(
                               movies[index].originalTitle,
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.titleMedium,
+                              style: poppinsRegular(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -75,7 +77,10 @@ class HorizontalViewSection extends StatelessWidget {
                             child: Text(
                               movies[index].getReleaseDateISO,
                               textAlign: TextAlign.start,
-                              style: const TextStyle(color: Colors.blueGrey),
+                              style: poppinsRegular(
+                                color: ThemeColor.secondaryDarkGrey,
+                                fontSize: 14.0
+                              ),
                             ),
                           ),
                         ],

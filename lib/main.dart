@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
+import 'themes/colors_theme.dart';
 
 void main() async {
   // To load the .env file contents into dotenv.
@@ -21,15 +22,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Getx Demo App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: ThemeColor().themeData,
       initialRoute: AppRoutes.home,
       getPages: AppPages.pages,
       debugShowCheckedModeBanner: false,
     );
   }
 }
-
-

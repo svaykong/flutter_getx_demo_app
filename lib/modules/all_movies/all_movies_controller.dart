@@ -10,16 +10,11 @@ class AllMoviesController extends GetxController {
   final MovieApi _movieApi = MovieApi();
   final TVShowsApi _tvShowsApi = TVShowsApi();
 
+  int totalPages = 0;
   List<ResultModel> allMovies = [];
   bool isLoading = true;
   String errMsg = '';
   BaseType? movieType;
-
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   fetchAllMovies();
-  // }
 
   void init(BaseType value) {
     movieType = value;
@@ -33,13 +28,10 @@ class AllMoviesController extends GetxController {
       }
 
       dynamic response;
-      int totalPages = 0;
-
       if (movieType == BaseType.POPULAR_MOVIE) {
         response = await _movieApi.getPopularMoviesByPage(pageNum: 1);
       } else if (movieType == BaseType.POPULAR_TVSHOWS) {
         response = await _tvShowsApi.getPopularTVShowsByPage(pageNum: 1);
-        'response: $response'.log();
       } else if (movieType == BaseType.TOPRATED_TVSHOWS) {
         response = await _tvShowsApi.getTopRatedTVShowsByPage(pageNum: 1);
       } else {

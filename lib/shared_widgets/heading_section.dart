@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_getx_demo_app/themes/app_text_theme.dart';
 
 class HeadingSection extends StatelessWidget {
   const HeadingSection({
@@ -19,13 +20,17 @@ class HeadingSection extends StatelessWidget {
         children: [
           Text(
             headingName,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: poppinsRegular(
+              fontSize: 18.0,
+            ),
           ),
           TextButton(
             onPressed: onSeeAllPressed,
             child: Text(
               'See All',
-              style: Theme.of(context).textTheme.titleMedium,
+              style: poppinsRegular(
+                fontSize: 18.0,
+              ),
             ),
           ),
         ],

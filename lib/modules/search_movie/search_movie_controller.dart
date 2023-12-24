@@ -1,32 +1,41 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 
-import '../../models/base_type.dart';
 import '../../models/movie_model.dart';
 import '../../apis/movie_api.dart';
 import '../../utils/logger.dart';
 
 class SearchMovieController extends GetxController {
+  static const _serviceName = 'SearchMovieController';
   final MovieApi _movieApi = MovieApi();
 
-  //MovieModel? resultSearchMovie;
-  //bool isLoading = false;
-  //String errMsg = '';
+  // Input stream (search terms)
+  final BehaviorSubject<String> _searchSubject = BehaviorSubject<String>();
 
-  Stream<MovieModel> search({required String query}) {
-    try {
-      return Stream.fromFuture(_movieApi.searchMovie(query: query));
-      /*
-      _movieApi.searchMovie(query: query)
-          .then((result) => MovieModel.fromMap(result, BaseType.UNKNOWN))
-          .asStream();
-      */
-    } catch (e) {
-      'exception: $e'.log();
-      throw Exception("Search exception: $e");
-    } finally {
-      'search finally'.log();
-    }
+  void search(String query) => _searchSubject.add(query);
+
+  // Output stream (search results)
+  late Stream<MovieModel> _results;
+
+  Stream<MovieModel> get results => _results;
+
+  @override
+  void onInit() {
+    '$_serviceName onInit'.log();
+    super.onInit();
+
+    /* rxdart approach */
+    _results = _searchSubject.debounceTime(const Duration(milliseconds: 500)).switchMap((query) async* {
+      yield await _movieApi.searchMovie(query: query);
+    });
+  }
+
+  @override
+  void dispose() {
+    '$_serviceName dispose'.log();
+    // _searchTerms.close();
+    super.dispose();
   }
 }
