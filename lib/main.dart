@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Getx Demo App',
+      title: 'Getx Demo App',
       theme: ThemeColor().themeData,
       initialRoute: AppRoutes.home,
       getPages: AppPages.pages,
