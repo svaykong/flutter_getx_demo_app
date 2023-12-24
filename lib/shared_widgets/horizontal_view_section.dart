@@ -67,7 +67,9 @@ class HorizontalViewSection extends StatelessWidget {
                             child: Text(
                               movies[index].originalTitle,
                               textAlign: TextAlign.start,
-                              style: poppinsRegular(),
+                              style: poppinsRegular(
+                                fontWeight: FontWeight.w700
+                              ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),

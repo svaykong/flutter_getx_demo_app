@@ -8,7 +8,7 @@ class MovieDetailsController extends GetxController {
   final MovieApi _movieApi = MovieApi();
 
   bool isLoading = true;
-  List<MovieDetailsModel> movieData = [];
+  MovieDetailsModel? movieData;
 
   @override
   void onInit() {
@@ -19,7 +19,7 @@ class MovieDetailsController extends GetxController {
   void fetchMovieDetails() async {
     var response = await _movieApi.getMovieDetails(movieId: movieId);
     if (response != null) {
-      movieData.add(MovieDetailsModel.fromMap(response));
+      movieData = MovieDetailsModel.fromMap(response);
       isLoading = false;
       update();
     }

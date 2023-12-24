@@ -11,6 +11,7 @@ class AllMoviesController extends GetxController {
   final TVShowsApi _tvShowsApi = TVShowsApi();
 
   int totalPages = 0;
+  int currentPage = 1;
   List<ResultModel> allMovies = [];
   bool isLoading = true;
   String errMsg = '';
@@ -18,6 +19,32 @@ class AllMoviesController extends GetxController {
 
   void init(BaseType value) {
     movieType = value;
+  }
+
+  Future<List<ResultModel>> loadMore(int nextPage) async {
+    'loadMore nextPage: $nextPage called...'.log();
+    isLoading = true;
+
+    final tmpMovies = <ResultModel>[];
+    dynamic response;
+    if (movieType == BaseType.POPULAR_MOVIE) {
+      response = await _movieApi.getPopularMoviesByPage(pageNum: nextPage);
+    } else if (movieType == BaseType.POPULAR_TVSHOWS) {
+      response = await _tvShowsApi.getPopularTVShowsByPage(pageNum: nextPage);
+    } else if (movieType == BaseType.TOPRATED_TVSHOWS) {
+      response = await _tvShowsApi.getTopRatedTVShowsByPage(pageNum: nextPage);
+    } else {
+      response = await _movieApi.getTopRatedMoviesByPage(pageNum: nextPage);
+    }
+    MovieModel movieModel = MovieModel.fromMap(response, movieType!);
+    tmpMovies.addAll(movieModel.results); // add result next page
+    currentPage = nextPage + 1;
+
+    isLoading = false;
+    update();
+
+    'loadMore finally...'.log();
+    return tmpMovies;
   }
 
   Future<void> fetchAllMovies() async {
@@ -41,6 +68,7 @@ class AllMoviesController extends GetxController {
       allMovies.addAll(movieModel.results); // add result page 1
 
       totalPages = int.tryParse(response["total_pages"].toString()) ?? 0;
+      /*
       for (int pageCount = 2; totalPages > 0; pageCount++) {
         // if pageCount reached to page 3 then we will stop
         if (pageCount == 3) {
@@ -54,12 +82,13 @@ class AllMoviesController extends GetxController {
         } else if (movieType == BaseType.TOPRATED_TVSHOWS) {
           response = await _tvShowsApi.getTopRatedTVShowsByPage(pageNum: pageCount);
         } else {
-          response = await _movieApi.getTopRatedMoviesByPage(pageNum: 1);
+          response = await _movieApi.getTopRatedMoviesByPage(pageNum: pageCount);
         }
 
         movieModel = MovieModel.fromMap(response, movieType!);
         allMovies.addAll(movieModel.results); // add result with other pages
       }
+      */
     } catch (e) {
       'fetchAllMovies exception: $e'.log();
       errMsg = e.toString();

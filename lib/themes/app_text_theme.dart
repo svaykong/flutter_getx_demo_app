@@ -7,11 +7,13 @@ TextStyle poppinsRegular({
   double fontSize = 16,
   FontWeight fontWeight = FontWeight.normal,
   String fontFamily = 'Poppins',
+  FontStyle fontStyle = FontStyle.normal,
 }) {
   return TextStyle(
     color: color,
     fontSize: fontSize,
     fontWeight: fontWeight,
     fontFamily: fontFamily,
+    fontStyle: fontStyle,
   );
 }

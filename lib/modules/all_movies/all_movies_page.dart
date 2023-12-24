@@ -13,8 +13,15 @@ import '../../utils/constants.dart';
 import '../../utils/logger.dart';
 import '../../modules/all_movies/all_movies_controller.dart';
 
-class AllMoviesPage extends StatelessWidget {
+class AllMoviesPage extends StatefulWidget {
   const AllMoviesPage({super.key});
+
+  @override
+  State<AllMoviesPage> createState() => _AllMoviesPageState();
+}
+
+class _AllMoviesPageState extends State<AllMoviesPage> {
+  final List<ResultModel> _allCurrentMovies = [];
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +44,8 @@ class AllMoviesPage extends StatelessWidget {
                 child: Text(controller.errMsg),
               );
             }
-            return _buildListView(controller.allMovies);
+            _allCurrentMovies.addAll(controller.allMovies);
+            return _buildListView();
           },
         ),
       ),
@@ -59,63 +67,92 @@ class AllMoviesPage extends StatelessWidget {
     }
   }
 
-  Widget _buildListView(List<ResultModel> results) {
-    return ListView.builder(
-      itemCount: results.length,
-      itemBuilder: (context, index) => Card(
-        margin: const EdgeInsets.all(10.0),
-        clipBehavior: Clip.antiAlias,
-        elevation: 2.0,
-        child: GestureDetector(
-          onTap: () {
-            Get.toNamed(AppRoutes.movieDetails, arguments: [results[index].id]);
-          },
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CachedNetworkImage(
-                    placeholder: (_, __) => Container(color: Colors.grey[100]),
-                    imageUrl: '$imageBaseUrl${results[index].backdropPath}',
-                    fit: BoxFit.cover,
-                    height: Get.height * 0.30,
-                    width: double.infinity,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0, top: 20.0),
-                    child: Text(
-                      results[index].originalTitle,
-                      textAlign: TextAlign.start,
-                      style: poppinsRegular(),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
-                    child: Text(
-                      results[index].getReleaseDateISO,
-                      textAlign: TextAlign.start,
-                      style: poppinsRegular(
-                        color: ThemeColor.secondaryDarkGrey,
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Positioned(
-                bottom: 55,
-                left: 5,
-                child: RoundProgressBar(
-                  percent: results[index].votPercent,
+  Widget _buildItem(ResultModel result) {
+    return Card(
+      margin: const EdgeInsets.all(10.0),
+      clipBehavior: Clip.antiAlias,
+      elevation: 2.0,
+      child: GestureDetector(
+        onTap: () {
+          Get.toNamed(AppRoutes.movieDetails, arguments: [result.id]);
+        },
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CachedNetworkImage(
+                  placeholder: (_, __) => Container(color: Colors.grey[100]),
+                  imageUrl: '$imageBaseUrl${result.backdropPath}',
+                  fit: BoxFit.cover,
+                  height: Get.height * 0.30,
+                  width: double.infinity,
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, top: 20.0),
+                  child: Text(
+                    result.originalTitle,
+                    textAlign: TextAlign.start,
+                    style: poppinsRegular(fontWeight: FontWeight.w700),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+                  child: Text(
+                    result.getReleaseDateISO,
+                    textAlign: TextAlign.start,
+                    style: poppinsRegular(
+                      color: ThemeColor.secondaryDarkGrey,
+                      fontSize: 14.0,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: 55,
+              left: 5,
+              child: RoundProgressBar(
+                percent: result.votPercent,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  Widget _buildListView() {
+    bool isLastItem = false;
+    final allMovieController = Get.find<AllMoviesController>();
+    final currentPage = allMovieController.currentPage;
+    return ListView.builder(
+        itemCount: _allCurrentMovies.length,
+        itemBuilder: (context, index) {
+          isLastItem = (_allCurrentMovies.length - 1) == index;
+          if (isLastItem) {
+            return Column(
+              children: [
+                _buildItem(_allCurrentMovies[index]),
+                allMovieController.totalPages > currentPage
+                    ? TextButton(
+                        onPressed: () async {
+                          // TODO: Load More
+                          // request to next result
+                          // final results = await allMovieController.loadMore(currentPage + 1);
+                          // _allCurrentMovies.add(results[0]);
+                          // setState(() {});
+                        },
+                        child: const Text('Load More'),
+                      )
+                    : const SizedBox.shrink(),
+              ],
+            );
+          } else {
+            return _buildItem(_allCurrentMovies[index]);
+          }
+        });
   }
 }

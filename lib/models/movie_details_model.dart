@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
+import 'package:equatable/equatable.dart';
 
-class MovieDetailsModel {
+class MovieDetailsModel extends Equatable {
   const MovieDetailsModel({
     required this.backdropPath,
     required this.id,
@@ -8,6 +9,8 @@ class MovieDetailsModel {
     required this.overview,
     required this.releaseDate,
     required this.votePercent,
+    required this.genres,
+    required this.tagline,
   });
 
   final String backdropPath;
@@ -16,6 +19,8 @@ class MovieDetailsModel {
   final String overview;
   final String releaseDate;
   final int votePercent;
+  final List<Genres> genres;
+  final String tagline;
 
   String get getReleaseDateISO {
     if (releaseDate.isEmpty) {
@@ -36,18 +41,36 @@ class MovieDetailsModel {
       overview: json['overview'],
       releaseDate: json['release_date'] ?? json['first_air_date'],
       votePercent: voteCount,
+      genres: List.from(json['genres']).map((genre) => Genres.fromMap(genre)).toList(),
+      tagline: json['tagline'],
     );
   }
+
+  @override
+  List<Object?> get props => [
+        backdropPath,
+        id,
+        originalTitle,
+        overview,
+        releaseDate,
+        votePercent,
+      ];
 }
 
-class Genres {
-  int id;
-  String name;
+class Genres extends Equatable {
+  const Genres({required this.id, required this.name});
 
-  Genres({required this.id, required this.name});
+  final int id;
+  final String name;
 
   factory Genres.fromMap(Map<String, dynamic> json) => Genres(
         id: json['id'],
         name: json['name'],
       );
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+      ];
 }
