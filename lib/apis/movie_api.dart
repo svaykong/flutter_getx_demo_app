@@ -41,6 +41,7 @@ class MovieApi {
     _url = '/movie/$movieId?api_key=$tmdApiKey';
     final response = await dio.get(_url);
     if (response.statusCode == 200) {
+      'response data: ${response.data}'.log();
       return response.data;
     } else {
       return null;

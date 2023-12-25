@@ -105,19 +105,6 @@ class MovieDetailsPage extends StatelessWidget {
                 ),
               ),
               const Gap(20),
-              RichText(
-                text: TextSpan(
-                  text: 'Genres ',
-                  style: poppinsRegular(fontSize: 20, fontWeight: FontWeight.bold),
-                  children: [
-                    TextSpan(
-                      text: movieItem.genres.map((genre) => genre.name).toString().replaceAll('(', '').replaceAll(')', ''),
-                      style: poppinsRegular(color: ThemeColor.primaryGrey),
-                    ),
-                  ],
-                ),
-              ),
-              const Gap(20),
               Text(
                 'Overview',
                 style: poppinsRegular(fontSize: 20, fontWeight: FontWeight.bold),
@@ -129,19 +116,35 @@ class MovieDetailsPage extends StatelessWidget {
                 textAlign: TextAlign.justify,
               ),
               const Gap(20.0),
-              RichText(
-                text: TextSpan(
-                  text: 'Release ',
-                  style: poppinsRegular(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: movieItem.getReleaseDateISO.isEmpty ? 'None' : movieItem.getReleaseDateISO,
-                      style: poppinsRegular(color: ThemeColor.primaryGrey),
+              Text(
+                'Release Date: ${movieItem.getReleaseDateISO.isEmpty ? 'None' : movieItem.getReleaseDateISO}',
+                style: poppinsRegular(),
+              ),
+              Text(
+                movieItem.genres.map((genre) => genre.name).join(' | '),
+                style: poppinsRegular(color: ThemeColor.primaryGrey),
+              ),
+              const Gap(20.0),
+              // TODO: Watch Trailer
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 5,
+                  backgroundColor: ThemeColor.primaryColor,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
-                  ],
+                    side: BorderSide(width: 0.45),
+                  ),
+                ),
+                onPressed: () {
+                  Get.snackbar('Watch Trailer', 'Todo display trailer');
+                },
+                child: const Text(
+                  'Watch Trailer',
+                  style: TextStyle(
+                    color: ThemeColor.white,
+                  ),
                 ),
               ),
             ],
