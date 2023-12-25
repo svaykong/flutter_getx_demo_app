@@ -11,3 +11,5 @@
 ## Movie-App with Getx example
 - https://github.com/socialmad/movie-app
 
+## Notice
+- Required api_key from themoviedb.org

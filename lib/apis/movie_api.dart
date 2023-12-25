@@ -49,12 +49,12 @@ class MovieApi {
 
   Future<MovieModel> searchMovie({required String query}) async {
     try {
-      _url = '$apiBaseUrl/search/movie?query=$query&include_adult=false&language=en-US&page=1';
+      _url = '$apiBaseUrl/search/movie?api_key=$apiKey&query=$query&include_adult=false&language=en-US&page=1';
       final response = await dio.get(
         _url,
         options: Options(headers: {
           "accept": "application/json",
-          "Authorization": "Bearer $token",
+          // "Authorization": "Bearer $token", // Can skip token
         }),
       );
       if (response.statusCode == 200) {
