@@ -43,7 +43,11 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: SafeArea(
+      body: _getBody,
+    );
+  }
+
+  Widget get _getBody => SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.only(bottom: 10.0),
           child: Column(
@@ -91,7 +95,5 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
+      );
 }

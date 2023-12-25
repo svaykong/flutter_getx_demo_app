@@ -12,8 +12,8 @@ class AllMoviesController extends GetxController {
 
   int totalPages = 0;
   int currentPage = 1;
-  List<ResultModel> allMovies = [];
-  bool isLoading = true;
+  RxList<ResultModel> allMovies = <ResultModel>[].obs;
+  RxBool isLoading = true.obs;
   String errMsg = '';
   BaseType? movieType;
 
@@ -21,11 +21,10 @@ class AllMoviesController extends GetxController {
     movieType = value;
   }
 
-  Future<List<ResultModel>> loadMore(int nextPage) async {
+  Future<void> loadMore(int nextPage) async {
     'loadMore nextPage: $nextPage called...'.log();
-    isLoading = true;
+    isLoading(true);
 
-    final tmpMovies = <ResultModel>[];
     dynamic response;
     if (movieType == BaseType.POPULAR_MOVIE) {
       response = await _movieApi.getPopularMoviesByPage(pageNum: nextPage);
@@ -37,14 +36,12 @@ class AllMoviesController extends GetxController {
       response = await _movieApi.getTopRatedMoviesByPage(pageNum: nextPage);
     }
     MovieModel movieModel = MovieModel.fromMap(response, movieType!);
-    tmpMovies.addAll(movieModel.results); // add result next page
+    allMovies.addAll(movieModel.results); // add result next page
     currentPage = nextPage + 1;
 
-    isLoading = false;
-    update();
+    isLoading(false);
 
     'loadMore finally...'.log();
-    return tmpMovies;
   }
 
   Future<void> fetchAllMovies() async {
@@ -68,33 +65,11 @@ class AllMoviesController extends GetxController {
       allMovies.addAll(movieModel.results); // add result page 1
 
       totalPages = int.tryParse(response["total_pages"].toString()) ?? 0;
-      /*
-      for (int pageCount = 2; totalPages > 0; pageCount++) {
-        // if pageCount reached to page 3 then we will stop
-        if (pageCount == 3) {
-          break;
-        }
-
-        if (movieType == BaseType.POPULAR_MOVIE) {
-          response = await _movieApi.getPopularMoviesByPage(pageNum: pageCount);
-        } else if (movieType == BaseType.POPULAR_TVSHOWS) {
-          response = await _tvShowsApi.getPopularTVShowsByPage(pageNum: pageCount);
-        } else if (movieType == BaseType.TOPRATED_TVSHOWS) {
-          response = await _tvShowsApi.getTopRatedTVShowsByPage(pageNum: pageCount);
-        } else {
-          response = await _movieApi.getTopRatedMoviesByPage(pageNum: pageCount);
-        }
-
-        movieModel = MovieModel.fromMap(response, movieType!);
-        allMovies.addAll(movieModel.results); // add result with other pages
-      }
-      */
     } catch (e) {
       'fetchAllMovies exception: $e'.log();
       errMsg = e.toString();
-      isLoading = false;
     } finally {
-      isLoading = false;
+      isLoading(false);
       update();
     }
   }

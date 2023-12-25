@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_getx_demo_app/themes/app_text_theme.dart';
+
+import '../themes/app_text_theme.dart';
 
 class HeadingSection extends StatelessWidget {
   const HeadingSection({

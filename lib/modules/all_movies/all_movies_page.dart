@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
-import '../../shared_widgets/round_progress_bar.dart';
-import '../../models/movie_model.dart';
 import '../../models/base_type.dart';
-import '../../routes/app_routes.dart';
-import '../../themes/app_text_theme.dart';
-import '../../themes/colors_theme.dart';
-import '../../utils/constants.dart';
-import '../../utils/logger.dart';
 import '../../modules/all_movies/all_movies_controller.dart';
+import '../../utils/logger.dart';
+import 'card_item.dart';
 
 class AllMoviesPage extends StatefulWidget {
   const AllMoviesPage({super.key});
@@ -21,38 +15,25 @@ class AllMoviesPage extends StatefulWidget {
 }
 
 class _AllMoviesPageState extends State<AllMoviesPage> {
-  final List<ResultModel> _allCurrentMovies = [];
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(getTitle),
+        title: Text(_getAppBarTitle),
       ),
-      body: SafeArea(
-        child: GetBuilder<AllMoviesController>(
-          builder: (controller) {
-            if (controller.isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            if (controller.errMsg.isNotEmpty) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(controller.errMsg),
-              );
-            }
-            _allCurrentMovies.addAll(controller.allMovies);
-            return _buildListView();
-          },
-        ),
-      ),
+      body: _getBody,
     );
   }
 
-  String get getTitle {
+  String get _getAppBarTitle {
     switch (Get.arguments) {
       case BaseType.POPULAR_MOVIE:
         return 'All Popular Movies';
@@ -67,92 +48,82 @@ class _AllMoviesPageState extends State<AllMoviesPage> {
     }
   }
 
-  Widget _buildItem(ResultModel result) {
-    return Card(
-      margin: const EdgeInsets.all(10.0),
-      clipBehavior: Clip.antiAlias,
-      elevation: 2.0,
-      child: GestureDetector(
-        onTap: () {
-          Get.toNamed(AppRoutes.movieDetails, arguments: [result.id]);
-        },
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CachedNetworkImage(
-                  placeholder: (_, __) => Container(color: Colors.grey[100]),
-                  imageUrl: '$imageBaseUrl${result.backdropPath}',
-                  fit: BoxFit.cover,
-                  height: Get.height * 0.30,
-                  width: double.infinity,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, top: 20.0),
-                  child: Text(
-                    result.originalTitle,
-                    textAlign: TextAlign.start,
-                    style: poppinsRegular(fontWeight: FontWeight.w700),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
-                  child: Text(
-                    result.getReleaseDateISO,
-                    textAlign: TextAlign.start,
-                    style: poppinsRegular(
-                      color: ThemeColor.secondaryDarkGrey,
-                      fontSize: 14.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: 55,
-              left: 5,
-              child: RoundProgressBar(
-                percent: result.votPercent,
-              ),
-            ),
-          ],
-        ),
-      ),
+  void _navigateToTop() {
+    const Duration duration = Duration(milliseconds: 400);
+    const Curve curve = Curves.ease;
+    var scrollPosition = _scrollController.position;
+    scrollPosition.animateTo(
+      0,
+      duration: duration,
+      curve: curve,
     );
   }
 
-  Widget _buildListView() {
-    bool isLastItem = false;
-    final allMovieController = Get.find<AllMoviesController>();
-    final currentPage = allMovieController.currentPage;
-    return ListView.builder(
-        itemCount: _allCurrentMovies.length,
-        itemBuilder: (context, index) {
-          isLastItem = (_allCurrentMovies.length - 1) == index;
-          if (isLastItem) {
-            return Column(
-              children: [
-                _buildItem(_allCurrentMovies[index]),
-                allMovieController.totalPages > currentPage
-                    ? TextButton(
-                        onPressed: () async {
-                          // TODO: Load More
-                          // request to next result
-                          // final results = await allMovieController.loadMore(currentPage + 1);
-                          // _allCurrentMovies.add(results[0]);
-                          // setState(() {});
-                        },
-                        child: const Text('Load More'),
-                      )
-                    : const SizedBox.shrink(),
-              ],
-            );
-          } else {
-            return _buildItem(_allCurrentMovies[index]);
-          }
-        });
-  }
+  Widget get _getBody => SafeArea(
+        child: GetBuilder<AllMoviesController>(
+          builder: (controller) {
+            if (controller.isLoading.value) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (controller.errMsg.isNotEmpty) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(controller.errMsg),
+              );
+            }
+
+            bool isLastItem = false;
+            final allMovies = controller.allMovies;
+            final currentPage = controller.currentPage;
+            return ListView.builder(
+                controller: _scrollController,
+                itemCount: allMovies.length,
+                itemBuilder: (context, index) {
+                  isLastItem = (allMovies.length - 1) == index;
+
+                  // verify the last item
+                  if (isLastItem) {
+                    return Column(
+                      children: [
+                        CardItem(result: allMovies[index]),
+                        Obx(() {
+                          return controller.isLoading.value
+                              ? const CircularProgressIndicator()
+                              : Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    controller.totalPages > currentPage
+                                        ? TextButton(
+                                            onPressed: () async {
+                                              // request to next result
+                                              await controller.loadMore(currentPage + 1);
+                                              'update allMovies: ${allMovies.length}'.log();
+
+                                              // trigger state to rebuild
+                                              setState(() {});
+                                            },
+                                            child: const Text('Load More'),
+                                          )
+                                        : const SizedBox.shrink(),
+                                    TextButton.icon(
+                                      label: const Text('Go Up'),
+                                      onPressed: _navigateToTop,
+                                      icon: const Icon(Icons.keyboard_arrow_up),
+                                    ),
+                                  ],
+                                );
+                        }),
+                      ],
+                    );
+                  } else {
+                    return CardItem(result: allMovies[index]);
+                  }
+                });
+          },
+        ),
+      );
 }

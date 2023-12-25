@@ -91,7 +91,7 @@ class HorizontalViewSection extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: 55,
+                  bottom: Get.height * 0.08,
                   left: 5,
                   child: RoundProgressBar(
                     percent: movies[index].votPercent,

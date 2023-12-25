@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
 import 'base_type.dart';
 
-class MovieModel {
-  MovieModel({
+class MovieModel extends Equatable {
+  const MovieModel({
     required this.movieType,
     required this.results,
     required this.page,
@@ -11,7 +12,7 @@ class MovieModel {
   });
 
   final BaseType movieType;
-  List<ResultModel> results;
+  final List<ResultModel> results;
   final int page;
   final int totalPages;
 
@@ -24,9 +25,17 @@ class MovieModel {
       totalPages: json['total_pages'],
     );
   }
+
+  @override
+  List<Object?> get props => [
+        movieType,
+        results,
+        page,
+        totalPages,
+      ];
 }
 
-class ResultModel {
+class ResultModel extends Equatable {
   const ResultModel({
     required this.id,
     required this.originalTitle,
@@ -61,4 +70,13 @@ class ResultModel {
       votPercent: voteCount,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        originalTitle,
+        backdropPath,
+        releaseDate,
+        votPercent,
+      ];
 }

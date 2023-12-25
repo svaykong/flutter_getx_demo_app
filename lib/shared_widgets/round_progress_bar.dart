@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -15,10 +16,10 @@ class RoundProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircularPercentIndicator(
-      radius: 30.0,
+      radius: Get.height * 0.04,
       lineWidth: 5.0,
       center: Container(
-        height: 50.0,
+        height: Get.height * 0.07,
         width: double.infinity,
         decoration: const BoxDecoration(
           color: ThemeColor.primaryColor,
