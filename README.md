@@ -13,3 +13,7 @@
 
 ## Notice
 - Required api_key from themoviedb.org
+
+### Flutter Api Key Define env files
+- https://codewithandrea.com/articles/flutter-api-keys-dart-define-env-files/
+- https://bilalrehman08.medium.com/envied-in-flutter-e8182d03b4a2

@@ -8,7 +8,7 @@ class TVShowsApi {
   final dio = Dio(BaseOptions(baseUrl: apiBaseUrl));
 
   Future<dynamic> getPopularTVShowsByPage({required int pageNum}) async {
-    _url = '/tv/popular?api_key=$apiKey&page=$pageNum';
+    _url = '/tv/popular?api_key=$tmdApiKey&page=$pageNum';
     final response = await dio.get(_url);
     if (response.statusCode == 200) {
       return response.data;
@@ -22,7 +22,7 @@ class TVShowsApi {
   }
 
   Future<dynamic> getTopRatedTVShowsByPage({required int pageNum}) async {
-    _url = '/tv/top_rated?api_key=$apiKey&page=$pageNum';
+    _url = '/tv/top_rated?api_key=$tmdApiKey&page=$pageNum';
     final response = await dio.get(_url);
     if (response.statusCode == 200) {
       return response.data;

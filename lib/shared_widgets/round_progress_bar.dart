@@ -16,10 +16,10 @@ class RoundProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircularPercentIndicator(
-      radius: Get.height * 0.04,
+      radius: 20,
       lineWidth: 5.0,
       center: Container(
-        height: Get.height * 0.07,
+        height: 35,
         width: double.infinity,
         decoration: const BoxDecoration(
           color: ThemeColor.primaryColor,

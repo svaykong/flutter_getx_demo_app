@@ -10,7 +10,7 @@ class MovieApi {
   final dio = Dio(BaseOptions(baseUrl: apiBaseUrl));
 
   Future<dynamic> getPopularMoviesByPage({required int pageNum}) async {
-    _url = '/movie/popular?api_key=$apiKey&page=$pageNum';
+    _url = '/movie/popular?api_key=$tmdApiKey&page=$pageNum';
     final response = await dio.get(_url);
     if (response.statusCode == 200) {
       return response.data;
@@ -24,7 +24,7 @@ class MovieApi {
   }
 
   Future<dynamic> getTopRatedMoviesByPage({required int pageNum}) async {
-    _url = '/movie/top_rated?api_key=$apiKey&page=$pageNum';
+    _url = '/movie/top_rated?api_key=$tmdApiKey&page=$pageNum';
     final response = await dio.get(_url);
     if (response.statusCode == 200) {
       return response.data;
@@ -38,7 +38,7 @@ class MovieApi {
   }
 
   Future<dynamic> getMovieDetails({required int movieId}) async {
-    _url = '/movie/$movieId?api_key=$apiKey';
+    _url = '/movie/$movieId?api_key=$tmdApiKey';
     final response = await dio.get(_url);
     if (response.statusCode == 200) {
       return response.data;
@@ -49,7 +49,7 @@ class MovieApi {
 
   Future<MovieModel> searchMovie({required String query}) async {
     try {
-      _url = '$apiBaseUrl/search/movie?api_key=$apiKey&query=$query&include_adult=false&language=en-US&page=1';
+      _url = '$apiBaseUrl/search/movie?api_key=$tmdApiKey&query=$query&include_adult=false&language=en-US&page=1';
       final response = await dio.get(
         _url,
         options: Options(headers: {
