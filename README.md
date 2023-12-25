@@ -17,3 +17,7 @@
 ### Flutter Api Key Define env files
 - https://codewithandrea.com/articles/flutter-api-keys-dart-define-env-files/
 - https://bilalrehman08.medium.com/envied-in-flutter-e8182d03b4a2
+
+### Add youtube video trailer 
+- https://kymoraa.medium.com/flutter-movies-app-youtube-video-support-part-3-ca6aef4bf005
+
